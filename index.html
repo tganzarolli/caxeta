@@ -1,0 +1,102 @@
+
+<html>
+    <head>
+    <title>Bounding box</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=geometry&sensor=false"></script>
+        <script src="./boundsbox.js" type="text/javascript"> </script>
+        <script type="text/javascript">
+        
+        x = -23.524959;
+        y = -46.634216;
+        fator = 0.03;
+        
+        function codeAddress() {
+          var address = document.forms[0].address.value;
+          if (!address)
+            return null;
+          var geocoder = new google.maps.Geocoder();
+          geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              loc = results[0].geometry.location;
+              x = loc.lat();
+              y = loc.lng();
+              fator = parseFloat(document.forms[0].fator.value);
+              initialize();
+            } else {
+              alert("Geocode was not successful for the following reason: " + status);
+            }
+          });
+          return true;
+        }
+          function initialize(reload) {
+            if (reload) {
+                //remove
+                b.setMap(null);
+                suc = codeAddress();
+                if (suc) {
+                    return;
+                }
+                else {
+                    x = parseFloat(document.forms[0].x.value);
+                    y = parseFloat(document.forms[0].y.value);
+                }
+                fator = parseFloat(document.forms[0].fator.value);
+                
+            }
+            var sw = new google.maps.LatLng(x-fator, y-fator);
+            var ne = new google.maps.LatLng(x+fator, y+fator);
+
+            // Create a bounding box
+            var bounds = new google.maps.LatLngBounds(sw, ne);
+            
+            if (!reload) {
+                var myOptions = {
+                  zoom: 12,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById("map_canvas"),
+                    myOptions);
+            }
+            b = new BoundsBox(map, bounds);
+            map.setCenter(bounds.getCenter());
+          }
+
+        </script>
+        <script type="text/javascript">
+/*
+            var map;
+            var asyncFunctions = new Array();
+            google.load("maps", "2.0",{"other_params":"sensor=false"});
+
+            function initialize() {
+                var sw = new GLatLng(59.0, 13.12);
+                var ne = new GLatLng(60.35, 16.90);
+
+                // Create a bounding box
+                var bounds = new GLatLngBounds(sw, ne);
+    
+                map = new google.maps.Map(document.getElementById("map"));
+                map.addControl(new GSmallMapControl());
+                map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
+                b = BoundsBox(map, bounds)
+            }
+            google.setOnLoadCallback(initialize);*/ 
+        </script>
+    </head>
+    <body onload="initialize()">
+        <form action="index.html">
+            Lat
+            <input type="text" name="x" value = "-23.524959">
+            Long
+            <input type="text" name="y" value ="-46.634216">
+            Endereco
+            <input type="text" name="address">
+            Fator
+            <input type="text" name="fator" value="0.03">
+            <input type="button" value = "Atualiza" onclick="javascript:initialize(true);">
+        </form>
+        <div id="map_canvas" style="width:100%; height:100%"></div>
+        </div>
+    </body>
+</html>
