@@ -29,6 +29,22 @@
           });
           return true;
         }
+        
+        function circle () {
+            var center = new google.maps.LatLng(x, y);
+            var populationOptions = {
+              strokeColor: "#FF0000",
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: "#FF0000",
+              fillOpacity: 0.35,
+              map: map,
+              center: center,
+              radius: parseInt(document.forms[0].radius.value)
+            };
+            var circle = new google.maps.Circle(populationOptions);
+        }
+        
           function initialize(reload) {
             if (reload) {
                 //remove
@@ -58,8 +74,15 @@
                 map = new google.maps.Map(document.getElementById("map_canvas"),
                     myOptions);
             }
-            b = new BoundsBox(map, bounds);
-            map.setCenter(bounds.getCenter());
+            if (document.forms[0].circle.checked) {
+                circle();
+            }
+            else {
+                b = new BoundsBox(map, bounds);    
+                map.setCenter(bounds.getCenter());
+            }
+            
+
           }
 
         </script>
@@ -90,10 +113,14 @@
             <input type="text" name="x" value = "-23.524959">
             Long
             <input type="text" name="y" value ="-46.634216">
-            Endereco
+            Endere&ccedil;o
             <input type="text" name="address">
-            Fator
+            Fator(graus)
             <input type="text" name="fator" value="0.03">
+            C&iacute;rculo?
+            <input type="checkbox" name="circle" value="true">
+            Raio(metros)
+            <input type="text" name="radius" value="50000">
             <input type="button" value = "Atualiza" onclick="javascript:initialize(true);">
         </form>
         <div id="map_canvas" style="width:100%; height:100%"></div>
