@@ -23,6 +23,7 @@
               y = loc.lng();
               fator = parseFloat(document.forms[0].fator.value);
               initialize();
+              
             } else {
               alert("Geocode was not successful for the following reason: " + status);
             }
@@ -30,7 +31,7 @@
           return true;
         }
         
-        function circle () {
+        function draw_circle () {
             var center = new google.maps.LatLng(x, y);
             var populationOptions = {
               strokeColor: "#FF0000",
@@ -38,11 +39,15 @@
               strokeWeight: 2,
               fillColor: "#FF0000",
               fillOpacity: 0.35,
-              map: map,
               center: center,
               radius: parseInt(document.forms[0].radius.value)
             };
-            var circle = new google.maps.Circle(populationOptions);
+            if (!(typeof circle == 'undefined')) {
+                circle.setMap(null);
+            }
+            circle = new google.maps.Circle(populationOptions);
+            circle.setMap(map);
+            map.setCenter(center);
         }
         
           function initialize(reload) {
@@ -66,7 +71,7 @@
             // Create a bounding box
             var bounds = new google.maps.LatLngBounds(sw, ne);
             
-            if (!reload) {
+            if (!reload && !(document.forms[0].circle.checked)) {
                 var myOptions = {
                   zoom: 12,
                   mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -75,7 +80,7 @@
                     myOptions);
             }
             if (document.forms[0].circle.checked) {
-                circle();
+                draw_circle();
             }
             else {
                 b = new BoundsBox(map, bounds);    
