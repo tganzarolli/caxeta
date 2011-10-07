@@ -1,7 +1,7 @@
 
 <html>
     <head>
-    <title>Bounding box</title>
+    <title>Caxeta, bounding box made easy</title>
 	<link rel="stylesheet" type="text/css" href="style.css" />
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=geometry&sensor=false"></script>
         <script src="./boundsbox.js" type="text/javascript"> </script>
@@ -62,26 +62,6 @@
             map.setCenter(bounds.getCenter());
           }
 
-        </script>
-        <script type="text/javascript">
-/*
-            var map;
-            var asyncFunctions = new Array();
-            google.load("maps", "2.0",{"other_params":"sensor=false"});
-
-            function initialize() {
-                var sw = new GLatLng(59.0, 13.12);
-                var ne = new GLatLng(60.35, 16.90);
-
-                // Create a bounding box
-                var bounds = new GLatLngBounds(sw, ne);
-    
-                map = new google.maps.Map(document.getElementById("map"));
-                map.addControl(new GSmallMapControl());
-                map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
-                b = BoundsBox(map, bounds)
-            }
-            google.setOnLoadCallback(initialize);*/ 
         </script>
     </head>
     <body onload="initialize()">
